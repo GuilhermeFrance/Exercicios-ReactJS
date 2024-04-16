@@ -1,0 +1,16 @@
+*{
+  margin: auto;
+}
+
+#container{
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(7, 39, 128);
+  width: 500px;
+  height: 100px;
+  border-radius: 20px;
+}
+
+#h1-block{
+  color: white;
+}
