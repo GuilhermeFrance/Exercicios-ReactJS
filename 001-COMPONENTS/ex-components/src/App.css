@@ -1,0 +1,16 @@
+* {
+  margin: auto;
+  padding: 0px;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+#react{
+  color: aqua;
+}
+
+#div-comp{
+  display: flex;
+  flex-direction: column;
+  
+}
