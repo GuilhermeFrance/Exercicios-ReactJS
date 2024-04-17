@@ -1,0 +1,5 @@
+1. Crie um componente chamado "Challenge";
+2. Importe-o em 'App.js'
+3. No componente criado faça a criação de dois valores númericos;
+4. Imprima estes valores no componente;
+5. Crie também um evento click que soma estes dois valores e exibe no console
