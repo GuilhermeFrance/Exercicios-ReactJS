@@ -1,0 +1,34 @@
+*{
+  margin: auto;
+}
+
+#react-black{
+
+  width: 7%;
+}
+
+#div-img-public{
+
+  display: flex;
+  align-items: center;
+
+}
+
+#container{
+
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: center;
+  gap: 40px;
+}
+
+#div-img-assets{
+  display: flex;
+  gap: 30px;
+}
+
+#react-logo{
+
+  width: 10%;
+}
