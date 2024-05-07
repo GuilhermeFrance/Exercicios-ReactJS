@@ -1,59 +1,9 @@
 {
   "products": [
     {
-      "id": "1",
-      "name": "Camisa",
-      "price": 59.9
-    },
-    {
-      "id": "2",
-      "name": "Calça vermelha",
-      "price": 90
-    },
-    {
-      "id": "3",
-      "name": "Boné aba reta",
-      "price": 29.9
-    },
-    {
-      "id": "6058",
-      "name": "teste",
+      "id": "2a44",
+      "name": "TESTE",
       "price": "12"
-    },
-    {
-      "id": "6ea9",
-      "name": "carro",
-      "price": "1111"
-    },
-    {
-      "id": "121a",
-      "name": "teclado",
-      "price": "1111"
-    },
-    {
-      "id": "feb1",
-      "name": "teclado",
-      "price": "1111"
-    },
-    {
-      "id": "2767",
-      "name": "teclado",
-      "price": "1111"
-    },
-    {
-      "id": "e716",
-      "name": "teclado",
-      "price": "1111"
-    },
-    {
-      "id": "3172",
-      "name": "teclado",
-      "price": "1111"
-    },
-    {
-      "id": "e590",
-      "name": "teste",
-      "price": "23213"
     }
   ]
 }
