@@ -1,113 +1,85 @@
-import { useEffect, useState } from "react";
 import "./App.css";
-
-// 4 - custom hook
-import { useFetch } from "./hooks/useFetch";
-
-const url = "http://localhost:3000/products";
+import { useState, useEffect } from "react";
+import { useFetch } from "../hooks/useFetch.jsx"
+import Products from "./components/Products";
+import Form from "./components/Form";
+import { Header } from "./components/Header.jsx";
 
 function App() {
-  const [products, setProducts] = useState([]);
-
-  // 4 - custom hook
-  const { data: items, httpConfig, loading, error } = useFetch(url);
+  const url = "http://localhost:3000/products";
 
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState();
+  const [img, setImg] = useState("");
 
-  // 1 - resgatando dados
-  //useEffect(() => {
-  //  async function fetchData() {
+  // 4 - custom hook
 
-  //    const res = await fetch(url);
-  //   const data = await res.json();
+  const { data: products, httpConfig , loading , err,} = useFetch(url);
 
-  //    setProducts(data);
-  //  }
-  //  fetchData()
+  // 1 - fecth dos dadosda API
 
-  //}, [])
+  // useEffect(() => {
+  //   async function fetchApi() {
+  //     const res = await fetch(url);
+  //     const data = await res.json();
 
-  // 2 - adicionando dados
+  //     setProducts(data);
+  //   }
+  //   fetchApi();
+  // }, []);
+
+  // 2 - adicionando produtos à API
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const product = {
+    const newProduct = {
       name,
-      price,
+      price : Number(price),
+      img,
     };
+    console.log(newProduct);
+    console.log(products);
 
-    //    const res = await fetch(url, {
-    //      method: "POST",
-    //      headers: {
-    //        "Content-type" : "application/json"
-    //     },
-    //      body: JSON.stringify(product)
-    //    })
+    // const response = await fetch( url, {
+    //   method: 'POST',
+    //   headers:{
+    //     'Content-Type' : 'application/json'
+    //   },
+    //   body: JSON.stringify(newProduct)
+    // })
 
-    // 3 - carregamento dinâmico
-    //    const addedProduct = await res.json()
+    // // 3 - carregamento dinâmico
 
-    //    setProducts((prevProducts) => [...prevProducts, addedProduct])
+    // const addedProduct = await response.json()
 
-    // 5 - refatorando post
+    // POST com o hook
 
-    httpConfig(product, "POST");
+    httpConfig(newProduct, "POST");
 
     setName("");
     setPrice("");
+    setImg("");
   };
 
-  // 8 - desafio 6
-  const handleRemove = (id) => {
-    httpConfig(id, "DELETE");
-  };
-
+ 
   return (
     <div className="App">
-      <h1>Lista de produtos</h1>
-      {/* 6 - loading */}
-      {loading && <p>Carregando dados...</p>}
-      {error && <p>{error}</p>}
-      {!error && (
-        <ul>
-          {items &&
-            items.map((product) => (
-              <li key={product.id}>
-                {product.name} - R$: {product.price}
-                <button onClick={() => handleRemove(product.id)}>
-                  Excluir
-                </button>
-              </li>
-            ))}
-        </ul>
-      )}
+      
+      <Header/>
+      <h2 className="subtitle">Gestor de Estoque</h2>
+      <Products products={products} loading={loading} err={err}/>
 
-      <div className="add-product">
-        <form onSubmit={handleSubmit}>
-          <label>
-            Nome:
-            <input
-              type="text"
-              value={name}
-              name="name"
-              onChange={(e) => setName(e.target.value)}
-            />
-          </label>
-          <label>
-            Preço
-            <input
-              type="text"
-              value={price}
-              name="price"
-              onChange={(e) => setPrice(e.target.value)}
-            />
-          </label>
-          {/* 7 - state de loading no post */}
-          {loading && <input type="submit" disabled value="Aguarde" />}
-          {!loading && <input type="submit" value="Criar" />}
-        </form>
-      </div>
+      <h2 className="subtitle">Novo produto</h2>
+
+      <Form 
+      price = {price}
+      setPrice = {setPrice}
+      name = {name}
+      setName = {setName}
+      img = {img}
+      setImg = {setImg}
+      loading = {loading}
+      func = {handleSubmit}/>
     </div>
   );
 }
