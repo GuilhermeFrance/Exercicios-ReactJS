@@ -1,19 +1,19 @@
 {
     "products": [
-        {
-            "name": "Guilherme France",
-            "job": "Software Engineer",
-            "age": 21
+        {   
+            "id": 1,
+            "name": "Gabinete Gamer Rise Mode x78",
+            "price": 120.00
         },
         {
-            "name": "Silvano Sales",
-            "job": "Singer",
-            "age": 35
+            "id": 2,
+            "name": "Mouse Razer Deathadder",
+            "price": 100.00
         },
         {
-            "name": "Neymar Jr",
-            "job": "Soccer Player",
-            "age": 32
+            "id": 3,
+            "name": "Teclado CK62",
+            "price": 150.00
         }
     ]
     
