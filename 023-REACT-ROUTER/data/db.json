@@ -1,0 +1,20 @@
+{
+    "products": [
+        {
+            "name": "Guilherme France",
+            "job": "Software Engineer",
+            "age": 21
+        },
+        {
+            "name": "Silvano Sales",
+            "job": "Singer",
+            "age": 35
+        },
+        {
+            "name": "Neymar Jr",
+            "job": "Soccer Player",
+            "age": 32
+        }
+    ]
+    
+}

@@ -1,86 +1,111 @@
+import { useEffect, useState } from "react";
 import "./App.css";
-import { useState, useEffect } from "react";
-import { useFetch } from "../hooks/useFetch.jsx"
-import Products from "./components/Products";
-import Form from "./components/Form";
-import { Header } from "./components/Header.jsx";
+
+// 4 - custom hook
+import { useFetch } from "../hooks/useFetch";
 
 function App() {
+  const [count, setCount] = useState(0);
   const url = "http://localhost:3000/products";
 
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState();
-  const [img, setImg] = useState("");
-
   // 4 - custom hook
+  const { data: items, httpConfig, loading, err } = useFetch(url);
 
-  const { data: products, httpConfig , loading , err,} = useFetch(url);
+  const [products, setProducts] = useState([]);
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
 
-  // 1 - fecth dos dadosda API
-
+  // 1 - resgatando dados
   // useEffect(() => {
-  //   async function fetchApi() {
+  //   async function fetchData() {
   //     const res = await fetch(url);
   //     const data = await res.json();
-
   //     setProducts(data);
   //   }
-  //   fetchApi();
+  //   fetchData();
   // }, []);
 
-  // 2 - adicionando produtos à API
-
+  // 2 - add produtos
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newProduct = {
+
+    const product = {
       name,
-      price : Number(price),
-      img,
+      price,
     };
-    console.log(newProduct);
-    console.log(products);
 
-    // const response = await fetch( url, {
-    //   method: 'POST',
-    //   headers:{
-    //     'Content-Type' : 'application/json'
-    //   },
-    //   body: JSON.stringify(newProduct)
-    // })
+    //     const res = await fetch(url, {
+    //     method: "POST",
+    //      headers: {
+    //        "Content-type":"application/json"
+    //      },
+    //      body: JSON.stringify(product)
+    //    })
 
-    // // 3 - carregamento dinâmico
+    // 3 - carregamento de dados dinâmicos
+    //  const addedProducts = await res.json()
+    //  setProducts((prevProducts) => [...prevProducts, addedProducts])
 
-    // const addedProduct = await response.json()
+    // 5 - carregamento dinâmico
 
-    // POST com o hook
-
-    httpConfig(newProduct, "POST");
+    httpConfig(product, "POST");
 
     setName("");
     setPrice("");
-    setImg("");
   };
 
- 
+  // 8 - desafio 6
+
+  const handleRemove = (id) => {
+    httpConfig(id, "DELETE")
+  }
+
   return (
-    <div className="App">
-      
-      <Header/>
-      <h2 className="subtitle">Gestor de Estoque</h2>
-      <Products products={products} loading={loading} err={err}/>
+    <>
+      <div className="App">
+        <h1>Produtos</h1>
+        {loading && <p>Carregando dados...</p>}
+        {err && <p>{err}</p>}
+        {!err && (
+          <ul>
+            {items &&
+              items.map((product) => (
+                <li key={product.id}>
+                  {product.name} - R$: {product.price}
+                <button className="trash-btn" onClick={() => handleRemove(product.id) }>X</button>
+                </li>
+              ))}
+          </ul>
+        )}
 
-      <h2 className="subtitle">Novo produto</h2>
-
-      <Form 
-      price = {price}
-      setPrice = {setPrice}
-      name = {name}
-      setName = {setName}
-      img = {img}
-      setImg = {setImg}
-      loading = {loading}
-      func = {handleSubmit}/>
-    </div>
+        <div className="add-products" onSubmit={handleSubmit}>
+          <form>
+            <label>
+              Nome:
+              <input
+                type="text"
+                value={name}
+                name="name"
+                onChange={(e) => setName(e.target.value)}
+              />
+            </label>
+            <label>
+              Preço
+              <input
+                type="number"
+                value={price}
+                name="price"
+                onChange={(e) => setPrice(e.target.value)}
+              />
+            </label>
+            {/* 7 - loading no post */}
+            {loading && <input type="submit" value="Aguarde" disabled />}
+            {!loading && <input type="submit" value="Criar" />}
+          </form>
+        </div>
+      </div>
+    </>
   );
 }
 

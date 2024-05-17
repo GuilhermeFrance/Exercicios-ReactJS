@@ -1,80 +1,72 @@
-import { useState, useEffect } from "react";
-
 // 4 - custom hook
+
+import { useEffect, useState } from "react";
+
 export const useFetch = (url) => {
   const [data, setData] = useState(null);
 
-  // 5 - adiconando o POST ao hook
+  // 5 refatorando o post
 
   const [config, setConfig] = useState(null);
   const [method, setMethod] = useState(null);
   const [callFetch, setCallFetch] = useState(false);
 
-  // 6 - criando controle de tela de loading
+  // 6 - loading
+  const [loading, setLoading] = useState(false);
 
-  const [loading, setLoading] = useState(false)
-
-  // 7 - trabalhando com possibilidade de erro usando TRY CATCH
-
-  const [err, setErr] = useState(false)
+  // 7 - tratando erros
+  const [err, setErr] = useState(null);
 
   // 8 - desafio 6
   const [itemId, setItemId] = useState(null)
-  
+
   const httpConfig = (data, method) => {
     if (method === "POST") {
       setConfig({
-        method,
+        method: "POST",
         headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      setMethod("POST");
-    } else if(method === "DELETE") {
-      setConfig({
-        method,
-        headers: {
-          "content-type": "application/json",
+          "Content-type": "application/json",
         },
         body: JSON.stringify(data),
       });
       setMethod(method);
-      setItemId(data);
+    }else if (method === "DELETE") {
+      setConfig({
+        method,
+        headers: {
+          "Content-type": "application/json",
+        }
+      });
+      setMethod(method);
+      setItemId(data)
     }
   };
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(url);
+        const json = await res.json();
 
-    setLoading(true)
-    
-      try {  
-          const res = await fetch(url);
-          const data = await res.json();
-          setData(data);
-          setLoading(false)
+        setData(json);
+      } catch (error) {
+
+        console.log(error.message)
+
+        setErr("Houve um erro ao carregar os dados, tente novamente mais tarde! ")
       }
 
-     catch (error) {
-      console.log(error)
-      setErr(true)
-    }
-  }
-    fetchData()
-    setLoading(false)
-    
+      setLoading(false);
+    };
+    fetchData();
   }, [url, callFetch]);
 
-  // POST
-
+  // 5 - refatorando post
   useEffect(() => {
-    
-    setLoading(true)
-
     const httpRequest = async () => {
-      let json
+
+      let json 
 
       if (method === "POST") {
         let fetchOptions = [url, config];
@@ -83,25 +75,20 @@ export const useFetch = (url) => {
 
         json = await res.json();
 
+        setCallFetch(json);
+      }else if (method === "DELETE") {
         
-
-        setLoading(false)
-      } else if(method === "DELETE") {
 
         const deleteUrl = `${url}/${itemId}`
 
-        const res = await fetch(deleteUrl)
-        json = await res.json()
+        const res = await fetch(deleteUrl, config)
 
+        json = await res.json()
       }
-      setCallFetch(json);
+      setCallFetch(json)
     };
     httpRequest();
+  }, [config]);
 
-    
-  
-  }, [config, url, method]);
-
-
-  return { data, httpConfig , loading, err, url };
+  return { data, httpConfig, loading, err };
 };
